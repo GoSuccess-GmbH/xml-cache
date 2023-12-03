@@ -1,0 +1,28 @@
+{
+  "name": "xml-cache",
+  "version": "1.0.0",
+  "description": "Generates an XML sitemap for cache plugins.",
+  "main": "index.js",
+  "scripts": {
+    "start": "wp-scripts start",
+    "build": "wp-scripts build",
+    "build:settings-panel": "wp-scripts build --webpack-src-dir=src/settings-panel/ --output-path=assets/settings-panel/",
+    "build:admin": "wp-scripts build --webpack-src-dir=src/admin/ --output-path=assets/admin/"
+  },
+  "author": "GoSuccess",
+  "license": "ISC",
+  "dependencies": {
+    "@wordpress/api-fetch": "^6.44.0",
+    "@wordpress/components": "^25.13.0",
+    "@wordpress/data": "^9.17.0",
+    "@wordpress/dom-ready": "^3.47.0",
+    "@wordpress/edit-post": "^7.24.0",
+    "@wordpress/element": "^5.24.0",
+    "@wordpress/i18n": "^4.47.0",
+    "@wordpress/plugins": "^6.15.0",
+    "@wordpress/url": "^3.48.0"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "26.18.0"
+  }
+}
