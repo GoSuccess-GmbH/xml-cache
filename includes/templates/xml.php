@@ -13,7 +13,7 @@ $xml.= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 if ( ! empty( $sitemap_urls ) ) {
     foreach ( $sitemap_urls as $url ) {
         $xml .= '<url>';
-        $xml .= '<loc>' . $url . '</loc>';
+        $xml .= '<loc>' . \esc_url( $url ) . '</loc>';
         $xml .= '</url>';
     }
 }
@@ -23,4 +23,4 @@ $xml.= '</urlset>';
 header( 'Content-Type: text/xml' );
 header( 'X-Robots-Tag: noindex, nofollow' );
 
-echo $xml;
+echo( $xml );

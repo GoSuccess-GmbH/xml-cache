@@ -72,8 +72,8 @@ class Meta {
                 </label>
                 <p class="description" id="xml_cache_enabled-description">%s</p>
             </p>',
-            $current_value,
-            \checked( $xml_cache_enabled, $current_value, false ),
+            \absint( $current_value ),
+            \checked( $xml_cache_enabled, \absint( $current_value ), false ),
             esc_html__( 'Enable', 'xml-cache' ),
             esc_html__( 'Enable XML cache sitemap for this post?', 'xml-cache' )
         );
@@ -81,13 +81,13 @@ class Meta {
 
     public function save_post( int $post_id, WP_Post $post, bool $update ): void {
         if ( ! isset( $_POST['xml_cache_classic_nonce'] )
-            || ! \wp_verify_nonce( $_POST['xml_cache_classic_nonce'], 'xml_cache_classic' )
+            || ! \wp_verify_nonce( \sanitize_text_field( \wp_unslash ( $_POST['xml_cache_classic_nonce'] ) ), 'xml_cache_classic' )
             || ( defined( 'DOING_AUTOSAVE' ) && \DOING_AUTOSAVE )
             || ! \current_user_can( 'manage_options' ) ) {
             return;
         }
 
-        $checkbox_value = \wp_validate_boolean( $_POST['xml_cache_enabled'] );
+        $checkbox_value = \wp_validate_boolean( \absint( $_POST['xml_cache_enabled'] ) );
 
         \update_post_meta(
             post_id: $post_id,
