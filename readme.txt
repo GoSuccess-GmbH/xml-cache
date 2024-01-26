@@ -3,7 +3,7 @@
 Contributors: gosuccess
 Tags: xml, cache, sitemap, litespeed cache, pagespeed
 Requires at least: 6.0
-Tested up to: 6.4.1
+Tested up to: 6.4.2
 Stable tag: 1.0.0
 Requires PHP: 8.0
 License: GPLv3 or later
@@ -13,23 +13,24 @@ Generates an XML sitemap for cache plugins.
 
 == Description ==
 
-Dieses Plugin erstellt eine XML Sitemap mit allen Beiträgen, Seiten, Kategorien, Archiven und Tag-Seiten, unabhängig davon, ob diese von der Suchmaschinenindexerung ausgeschlossen sind oder nicht.
-
-Der Vorteil zu einer normalen Sitemap ist, dass keine Seiten von der Sitemap ausgeschlossen werden. Du kannst die XML Cache Sitemap in deinem Cache Plugin, wie z.B. LiteSpeed Cache angeben, um deinen Webseitencache vollständig aufzuwärmen.
-
---
-
 This plugin creates an XML sitemap with all posts, pages, categories, archives and tag pages, regardless of whether they are excluded from search engine indexing or not.
 
-The advantage over a normal sitemap is that no pages are excluded from the sitemap. You can specify the XML cache sitemap in your cache plugin, such as LiteSpeed Cache, to fully warm up your website cache.
+The advantage over a normal sitemap is that no pages are excluded from the sitemap. You can specify the XML cache sitemap in your cache plugin, such as [LiteSpeed Cache](https://de.wordpress.org/plugins/litespeed-cache/), to fully warm up your website cache.
 
 == Screenshots ==
 
-
+1. XML Cache Menu & Settings.
+2. Enable or disable XML cache for a specific post or page.
 
 == Frequently Asked Questions ==
 
+= What is the URL to the sitemap? =
 
+The sitemap can be accessed at /cache.xml. You can also simply click on the "Open Sitemap" button in the settings to open the sitemap and copy the URL from the browser address bar.
+
+= How can I exclude posts and pages from the sitemap? =
+
+Open the post or page you want to exclude. You will find the option to disable the XML cache on the right.
 
 == Installation ==
 
