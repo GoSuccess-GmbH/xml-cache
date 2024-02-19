@@ -107,6 +107,23 @@ class Sitemap {
 
             if ( ! empty( $permalink ) ) {
                 $this->sitemap_urls[] = $permalink;
+
+                /**
+                 * Check if post has multiple pages.
+                 */
+                if ( 'get_permalink' === $permalink_callable ) {
+                    $postdata = \generate_postdata( $id );
+                    $slash = str_ends_with( $permalink, '/' ) ? '' : '/';
+
+                    if ( false !== $postdata && 1 === $postdata['multipage'] ) {
+                        $numpage = $postdata['numpages'];
+
+                        while ( $numpage > 1 ) {
+                            $this->sitemap_urls[] = $permalink . $slash . $numpage;
+                            $numpage--;
+                        }
+                    }
+                }
             }
         }
     }
