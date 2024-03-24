@@ -3,7 +3,7 @@
 Contributors: gosuccess
 Tags: xml, cache, sitemap, litespeed cache, pagespeed
 Requires at least: 6.0
-Tested up to: 6.4.3
+Tested up to: 6.5
 Stable tag: 1.1.0
 Requires PHP: 8.0
 License: GPLv3 or later
