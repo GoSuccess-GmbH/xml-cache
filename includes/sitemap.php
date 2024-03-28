@@ -123,6 +123,8 @@ class Sitemap {
                     'post_status'   => 'publish',
                 ];
 
+                $numpage = 1;
+
                 if ( 'get_permalink' === $permalink_callable ) { // Add pages
                     if ( $page_for_posts === $id ) { // Blog page
                         $seperator .= $permalinks_enabled ? 'page/' : 'paged=';
