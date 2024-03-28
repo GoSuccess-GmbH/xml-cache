@@ -5,7 +5,7 @@ namespace GoSuccess\XML_Cache;
 /**
  * Plugin Name:       XML Cache
  * Description:       Generates an XML sitemap for cache plugins.
- * Version:           1.1.0
+ * Version:           1.2.0
  * Requires at least: 6.0
  * Requires PHP:      8.0
  * Author:            GoSuccess

@@ -4,7 +4,7 @@ Contributors: gosuccess
 Tags: xml, cache, sitemap, litespeed cache, pagespeed
 Requires at least: 6.0
 Tested up to: 6.5
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -47,6 +47,12 @@ To install with the zip file downloaded from this page:
 7. Done.
 
 == Changelog ==
+
+= 1.2.0 =
+* XML cache now works if no permalinks are enabled.
+* Paginated categories, tag pages, blog page and frontpage are now also included in the XML sitemap.
+* Added blueprint for a live preview of the plugin.
+* Various optimizations.
 
 = 1.1.0 =
 * Paginated posts and pages are now also included in the XML sitemap.

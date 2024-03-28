@@ -61,14 +61,20 @@ class Api {
 
     public function sitemap_url( WP_REST_Request $request ): WP_REST_Response {
         if ( 'GET' === $request->get_method() ) {
-            $sitemap_url = \trailingslashit( \home_url() ) . 'cache.xml';
+            $home_url = \trailingslashit( \home_url() );
+            $sitemap_url = get_option( 'permalink_structure' )
+                ? $home_url . 'cache.xml'
+                : $home_url . '?xml_cache=true';
 
             return $this->result( [
+                'success' => true,
                 'sitemap_url' => $sitemap_url,
             ] );
         }
 
-        return $this->result();
+        return $this->result( [
+            'success' => false,
+        ] );
     }
 
     public function permission(): bool {

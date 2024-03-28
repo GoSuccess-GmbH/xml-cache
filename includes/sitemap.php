@@ -96,6 +96,10 @@ class Sitemap {
             return;
         }
 
+        $permalinks_enabled = \get_option( 'permalink_structure' );
+        $page_for_posts = \absint( \get_option( 'page_for_posts' ) );
+        $posts_per_page = \absint( \get_option( 'posts_per_page' ) );
+
         foreach ( $url_ids as $id ) {
             $is_post_cache_enabled = Meta::is_post_cache_enabled( $id );
 
@@ -108,21 +112,46 @@ class Sitemap {
             if ( ! empty( $permalink ) ) {
                 $this->sitemap_urls[] = $permalink;
 
-                /**
-                 * Check if post has multiple pages.
-                 */
-                if ( 'get_permalink' === $permalink_callable ) {
-                    $postdata = \generate_postdata( $id );
-                    $slash = str_ends_with( $permalink, '/' ) ? '' : '/';
+                $seperator = $permalinks_enabled
+                    ? ( str_ends_with( $permalink, '/' ) ? '' : '/' )
+                    : ( str_contains( $permalink, '?' ) ? '&' : '?' );
+                
+                $args = [
+                    'numberposts'   => -1,
+                    'fields'        => 'ids',
+                    'orderby'       => 'ID',
+                    'post_status'   => 'publish',
+                ];
 
-                    if ( false !== $postdata && 1 === $postdata['multipage'] ) {
-                        $numpage = $postdata['numpages'];
+                if ( 'get_permalink' === $permalink_callable ) { // Add pages
+                    if ( $page_for_posts === $id ) { // Blog page
+                        $seperator .= $permalinks_enabled ? 'page/' : 'paged=';
+                        $args['post_type'] = 'post';
+                        $posts_found = \get_posts( $args );
+                        $numpage = ceil( count( $posts_found ) / $posts_per_page );
+                    } else { // Posts
+                        $postdata = \generate_postdata( $id );
+                        $seperator .= $permalinks_enabled ? 'page/' : 'page=';
 
-                        while ( $numpage > 1 ) {
-                            $this->sitemap_urls[] = $permalink . $slash . $numpage;
-                            $numpage--;
+                        if ( false !== $postdata && 1 === $postdata['multipage'] ) {
+                            $numpage = $postdata['numpages'];
                         }
                     }
+                } else { // Add pages categories and tag pages.
+                    if ( 'get_category_link' === $permalink_callable ) {
+                        $args['category'] = $id;
+                    } else if ( 'get_tag_link' === $permalink_callable ) {
+                        $args['tag_id'] = $id;
+                    }
+
+                    $posts_found = \get_posts( $args );
+                    $numpage = ceil( count( $posts_found ) / $posts_per_page );
+                    $seperator .= $permalinks_enabled ? 'page/' : 'paged=';
+                }
+
+                while ( $numpage > 1 ) {
+                    $this->sitemap_urls[] = $permalink . $seperator . $numpage;
+                    $numpage--;
                 }
             }
         }

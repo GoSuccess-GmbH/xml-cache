@@ -71,7 +71,9 @@ export default function Settings() {
         apiFetch( {
             path: rest_namespace + '/sitemap-url'
         } ).then( ( result ) => {
-            setSitemapUrl( result.sitemap_url );
+            if ( result.success ) {
+                setSitemapUrl( result.sitemap_url );
+            }
         } ).catch( ( error ) => {
             console.error( error );
         } );
@@ -81,7 +83,7 @@ export default function Settings() {
         }
     }, [optionsSaved]);
 
-    if ( options === null || sitemapUrl == null ) {
+    if ( options == null /*|| sitemapUrl == null*/ ) {
         return <Spinner />;
     }
 
@@ -90,6 +92,11 @@ export default function Settings() {
         <Panel
             header={ __( 'XML Cache Settings', 'xml-cache' ) }
         >
+            { sitemapUrl == null && (
+                <Notice status="error" isDismissible={ false }>
+                    { __( 'An unknown error occurred.', 'xml-cache' ) }
+                </Notice>
+            ) }
             <PanelHeader>
                 <Button
                     variant='primary'
@@ -97,6 +104,7 @@ export default function Settings() {
                     icon={ 'admin-links' }
                     size='compact'
                     target='_blank'
+                    disabled={ sitemapUrl == null }
                 >
                     { __( 'Open Sitemap', 'xml-cache' ) }
                 </Button>
