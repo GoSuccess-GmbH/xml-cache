@@ -23,6 +23,6 @@
     "@wordpress/url": "^3.48.0"
   },
   "devDependencies": {
-    "@wordpress/scripts": "26.18.0"
+    "@wordpress/scripts": "30.22.0"
   }
 }
