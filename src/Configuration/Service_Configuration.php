@@ -18,7 +18,7 @@ use GoSuccess\XML_Cache\Controller\Rewrite_Rules_Controller;
 use GoSuccess\XML_Cache\Controller\Script_Controller;
 use GoSuccess\XML_Cache\Controller\Uninstall_Controller;
 use GoSuccess\XML_Cache\Repository\Activation_Repository;
-use GoSuccess\XML_Cache\Repository\API\v1\Admin\API_Repository;
+use GoSuccess\XML_Cache\Repository\API\V1\Admin\API_Repository;
 use GoSuccess\XML_Cache\Repository\Deactivation_Repository;
 use GoSuccess\XML_Cache\Repository\Menu_Repository;
 use GoSuccess\XML_Cache\Repository\Meta_Box_Repository;

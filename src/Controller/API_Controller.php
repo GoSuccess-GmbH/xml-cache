@@ -9,7 +9,7 @@ declare( strict_types=1 );
 
 namespace GoSuccess\XML_Cache\Controller;
 
-use GoSuccess\XML_Cache\Repository\API\v1\Admin\API_Repository;
+use GoSuccess\XML_Cache\Repository\API\V1\Admin\API_Repository;
 
 /**
  * Wires REST API endpoints.
