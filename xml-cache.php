@@ -14,7 +14,7 @@
  * @package xml-cache
  */
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 use GoSuccess\XML_Cache\Plugin;
 

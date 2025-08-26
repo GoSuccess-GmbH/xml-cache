@@ -7,7 +7,7 @@
 
 // phpcs:disable WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace GoSuccess\XML_Cache\Repository;
 

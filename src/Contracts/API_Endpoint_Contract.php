@@ -5,7 +5,7 @@
  * @package xml-cache
  */
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace GoSuccess\XML_Cache\Contracts;
 
@@ -15,7 +15,7 @@ use WP_REST_Response;
 /**
  * Interface for REST API endpoints used by the XML Cache plugin.
  */
-interface API_Endpoint_Interface {
+interface API_Endpoint_Contract {
 
 	/**
 	 * Initialize and register the endpoint.

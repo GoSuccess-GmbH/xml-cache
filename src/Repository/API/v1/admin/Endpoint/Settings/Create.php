@@ -5,14 +5,13 @@
  * @package xml-cache
  */
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace GoSuccess\XML_Cache\Repository\API\v1\Admin\Endpoint\Settings;
 
 use Exception;
 use GoSuccess\XML_Cache\Base\API_Endpoint_Base;
 use GoSuccess\XML_Cache\Model\API_Response;
-use GoSuccess\XML_Cache\Repository\Activation_Repository;
 use GoSuccess\XML_Cache\Repository\API\v1\Admin\API_Repository;
 use WP_REST_Request;
 use WP_REST_Response;
