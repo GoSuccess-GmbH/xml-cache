@@ -21,28 +21,33 @@ final class XML_Sitemap_Repository {
 	public array $sitemap_urls = array();
 
 	/**
-	 * Constructor.
+	 * Constructor kept intentionally light; heavy lifting is deferred.
 	 */
-	public function __construct() {
+	public function __construct() {}
+
+	/**
+	 * Collect URLs based on saved settings. Call this at runtime, not on bootstrap.
+	 */
+	public function collect_urls(): void {
 		$option = get_option( 'xml_cache_settings', false );
 
 		if ( false === $option ) {
 			return;
 		}
 
-		if ( $option[0]['posts_enabled'] ) {
+		if ( ! empty( $option[0]['posts_enabled'] ) ) {
 			$this->get_post_urls();
 		}
 
-		if ( $option[0]['categories_enabled'] ) {
+		if ( ! empty( $option[0]['categories_enabled'] ) ) {
 			$this->get_category_urls();
 		}
 
-		if ( $option[0]['archives_enabled'] ) {
+		if ( ! empty( $option[0]['archives_enabled'] ) ) {
 			$this->get_archive_urls();
 		}
 
-		if ( $option[0]['tags_enabled'] ) {
+		if ( ! empty( $option[0]['tags_enabled'] ) ) {
 			$this->get_tag_urls();
 		}
 	}
@@ -150,7 +155,8 @@ final class XML_Sitemap_Repository {
 			return;
 		}
 
-		$permalinks_enabled = get_option( 'permalink_structure' );
+		$permalinks_structure = get_option( 'permalink_structure' );
+		$permalinks_enabled   = ! empty( $permalinks_structure );
 		$page_for_posts     = absint( get_option( 'page_for_posts' ) );
 		$posts_per_page     = absint( get_option( 'posts_per_page' ) );
 
@@ -166,10 +172,6 @@ final class XML_Sitemap_Repository {
 			if ( ! empty( $permalink ) ) {
 				$this->sitemap_urls[] = $permalink;
 
-				$seperator = $permalinks_enabled
-					? ( str_ends_with( $permalink, '/' ) ? '' : '/' )
-					: ( str_contains( $permalink, '?' ) ? '&' : '?' );
-
 				$args = array(
 					'numberposts' => -1,
 					'fields'      => 'ids',
@@ -179,21 +181,24 @@ final class XML_Sitemap_Repository {
 
 				$numpage = 1;
 
-				if ( 'get_permalink' === $permalink_callable ) { // Add pages.
-					if ( $page_for_posts === $id ) { // Blog page.
-						$seperator        .= $permalinks_enabled ? 'page/' : 'paged=';
+				$context = 'archive';
+				if ( 'get_permalink' === $permalink_callable ) { // Singular or posts page.
+					if ( $page_for_posts === $id ) {
+						// Posts page behaves like an archive for pagination.
 						$args['post_type'] = 'post';
 						$posts_found       = get_posts( $args );
-						$numpage           = ceil( count( $posts_found ) / $posts_per_page );
-					} else { // Posts.
-						$postdata   = generate_postdata( $id );
-						$seperator .= $permalinks_enabled ? 'page/' : 'page=';
-
+						$numpage           = (int) ceil( count( $posts_found ) / max( 1, $posts_per_page ) );
+						$context           = 'archive';
+					} else {
+						// Multipage singular content.
+						$postdata = generate_postdata( $id );
 						if ( false !== $postdata && 1 === $postdata['multipage'] ) {
-							$numpage = $postdata['numpages'];
+							$numpage = (int) $postdata['numpages'];
 						}
+						$context = 'singular';
 					}
-				} else { // Add pages, categories and tag pages.
+				} else {
+					// Category or tag archives.
 					if ( 'get_category_link' === $permalink_callable ) {
 						$args['category'] = $id;
 					} elseif ( 'get_tag_link' === $permalink_callable ) {
@@ -201,12 +206,12 @@ final class XML_Sitemap_Repository {
 					}
 
 					$posts_found = get_posts( $args );
-					$numpage     = ceil( count( $posts_found ) / $posts_per_page );
-					$seperator  .= $permalinks_enabled ? 'page/' : 'paged=';
+					$numpage     = (int) ceil( count( $posts_found ) / max( 1, $posts_per_page ) );
+					$context     = 'archive';
 				}
 
 				while ( $numpage > 1 ) {
-					$this->sitemap_urls[] = $permalink . $seperator . $numpage;
+					$this->sitemap_urls[] = $this->build_paginated_url( (string) $permalink, (bool) $permalinks_enabled, (int) $numpage, (string) $context );
 					--$numpage;
 				}
 			}
@@ -214,10 +219,36 @@ final class XML_Sitemap_Repository {
 	}
 
 	/**
+	 * Build a paginated URL based on permalink structure and context.
+	 *
+	 * @param string $permalink           Base permalink.
+	 * @param bool   $permalinks_enabled  Whether pretty permalinks are enabled.
+	 * @param int    $page                Page number.
+	 * @param string $context             'singular' for posts/pages, 'archive' for blog/category/tag.
+	 * @return string                     Final paginated URL.
+	 */
+	private function build_paginated_url( string $permalink, bool $permalinks_enabled, int $page, string $context ): string {
+		if ( $permalinks_enabled ) {
+			$base = trailingslashit( $permalink );
+			if ( 'singular' === $context ) {
+				// Singular multipage posts use /2/ style.
+				return user_trailingslashit( (string) $base . $page );
+			}
+			// Archives (blog, category, tag) use /page/2/ style.
+			return user_trailingslashit( (string) $base . 'page/' . $page );
+		}
+
+		// Fallback to query args when pretty permalinks are disabled.
+		$param = ( 'singular' === $context ) ? 'page' : 'paged';
+		return (string) add_query_arg( $param, $page, $permalink );
+	}
+
+	/**
 	 * Render the XML sitemap and send appropriate headers.
 	 */
 	public static function render(): void {
-		$sitemap      = new self();
+		$sitemap = new self();
+		$sitemap->collect_urls();
 		$sitemap_urls = $sitemap->sitemap_urls;
 
 		$xml    = '';

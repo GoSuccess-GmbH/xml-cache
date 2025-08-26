@@ -35,7 +35,7 @@ final class Meta_Box_Controller {
 
 		add_action(
 			'save_post',
-			array( $this->meta_box_repository, 'action_save_post' ),
+			array( $this->meta_box_repository, 'save_post' ),
 			10,
 			3
 		);
