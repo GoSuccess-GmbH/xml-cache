@@ -1,0 +1,21 @@
+{
+  "name": "xml-cache",
+  "version": "1.0.0",
+  "description": "",
+  "license": "GPL-3.0-or-later",
+  "author": "GoSuccess",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "wp-scripts start",
+    "build": "wp-scripts build --webpack-src-dir=src/admin/ --output-path=../assets/admin/ && minify src/css/admin.css > ../assets/css/admin.min.css"
+  },
+  "dependencies": {
+    "@wordpress/api-fetch": "^7.29.0",
+    "@wordpress/dom-ready": "^4.29.0",
+    "@wordpress/element": "^6.29.0"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^30.22.0"
+  }
+}

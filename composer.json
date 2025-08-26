@@ -1,0 +1,46 @@
+{
+    "name": "gosuccess/xml-cache",
+    "description": "Generates an XML sitemap for cache plugins.",
+    "type": "library",
+    "license": "GPL-3.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "GoSuccess\\XML_Cache\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GoSuccess\\XML_Cache\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "GoSuccess"
+        }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "symfony/dependency-injection": "^7.3",
+        "symfony/config": "^7.3"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.10",
+        "wp-coding-standards/wpcs": "^3.0",
+        "phpcompatibility/php-compatibility": "^9.3",
+        "php-stubs/wordpress-stubs": "^6.7",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "lint": [
+            "@phpcs"
+        ],
+        "phpcs": "phpcs -q",
+        "phpcs:fix": "phpcbf -q"
+    }
+}
