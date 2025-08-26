@@ -1,12 +1,28 @@
 <?php
+/**
+ * Collects and renders XML sitemap URLs for the plugin endpoint.
+ *
+ * @package xml-cache
+ */
 
 declare( strict_types=1 );
 
 namespace GoSuccess\XML_Cache\Repository;
 
+/**
+ * Repository to assemble sitemap URLs and render XML.
+ */
 final class XML_Sitemap_Repository {
-    public array $sitemap_urls = array();
+	/**
+	 * Collected sitemap URLs.
+	 *
+	 * @var array<int,string>
+	 */
+	public array $sitemap_urls = array();
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		$option = get_option( 'xml_cache_settings', false );
 
@@ -31,6 +47,9 @@ final class XML_Sitemap_Repository {
 		}
 	}
 
+	/**
+	 * Collect post and page URLs.
+	 */
 	private function get_post_urls(): void {
 		$post_ids = get_posts(
 			array(
@@ -45,6 +64,9 @@ final class XML_Sitemap_Repository {
 		$this->get_urls( 'get_permalink', $post_ids );
 	}
 
+	/**
+	 * Collect category URLs.
+	 */
 	private function get_category_urls(): void {
 		$category_ids = get_categories(
 			array(
@@ -57,6 +79,9 @@ final class XML_Sitemap_Repository {
 		$this->get_urls( 'get_category_link', $category_ids );
 	}
 
+	/**
+	 * Collect tag URLs.
+	 */
 	private function get_tag_urls(): void {
 		$tag_ids = get_tags(
 			array(
@@ -69,6 +94,9 @@ final class XML_Sitemap_Repository {
 		$this->get_urls( 'get_tag_link', $tag_ids );
 	}
 
+	/**
+	 * Collect archive URLs.
+	 */
 	private function get_archive_urls(): void {
 		$archives = wp_get_archives(
 			array(
@@ -85,7 +113,7 @@ final class XML_Sitemap_Repository {
 			$archives = array_filter(
 				$archives,
 				function ( $item ) {
-					return trim( $item ) !== '';
+					return '' !== trim( $item );
 				}
 			);
 
@@ -96,6 +124,11 @@ final class XML_Sitemap_Repository {
 		}
 	}
 
+	/**
+	 * Get public post types list.
+	 *
+	 * @return array List of public post types.
+	 */
 	private function get_public_post_types(): array {
 		return array_values(
 			get_post_types(
@@ -106,6 +139,12 @@ final class XML_Sitemap_Repository {
 		);
 	}
 
+	/**
+	 * Resolve URLs for given IDs using a permalink-like callable.
+	 *
+	 * @param callable $permalink_callable Function to resolve a URL by ID.
+	 * @param array    $url_ids            IDs to resolve.
+	 */
 	private function get_urls( callable $permalink_callable, array $url_ids ): void {
 		if ( ! is_callable( $permalink_callable ) || empty( $url_ids ) ) {
 			return;
@@ -140,13 +179,13 @@ final class XML_Sitemap_Repository {
 
 				$numpage = 1;
 
-				if ( 'get_permalink' === $permalink_callable ) { // Add pages
-					if ( $page_for_posts === $id ) { // Blog page
+				if ( 'get_permalink' === $permalink_callable ) { // Add pages.
+					if ( $page_for_posts === $id ) { // Blog page.
 						$seperator        .= $permalinks_enabled ? 'page/' : 'paged=';
 						$args['post_type'] = 'post';
 						$posts_found       = get_posts( $args );
 						$numpage           = ceil( count( $posts_found ) / $posts_per_page );
-					} else { // Posts
+					} else { // Posts.
 						$postdata   = generate_postdata( $id );
 						$seperator .= $permalinks_enabled ? 'page/' : 'page=';
 
@@ -154,7 +193,7 @@ final class XML_Sitemap_Repository {
 							$numpage = $postdata['numpages'];
 						}
 					}
-				} else { // Add pages categories and tag pages.
+				} else { // Add pages, categories and tag pages.
 					if ( 'get_category_link' === $permalink_callable ) {
 						$args['category'] = $id;
 					} elseif ( 'get_tag_link' === $permalink_callable ) {
@@ -174,11 +213,14 @@ final class XML_Sitemap_Repository {
 		}
 	}
 
+	/**
+	 * Render the XML sitemap and send appropriate headers.
+	 */
 	public static function render(): void {
-		$sitemap = new self();
+		$sitemap      = new self();
 		$sitemap_urls = $sitemap->sitemap_urls;
 
-		$xml = '';
+		$xml    = '';
 		$writer = null;
 
 		if ( class_exists( '\\XMLWriter' ) ) {
@@ -190,22 +232,22 @@ final class XML_Sitemap_Repository {
 
 			if ( ! empty( $sitemap_urls ) ) {
 				foreach ( $sitemap_urls as $url ) {
-					if ( ! is_string( $url ) || $url === '' ) {
+					if ( ! is_string( $url ) || '' === $url ) {
 						continue;
 					}
 
 					$loc = \esc_url_raw( $url );
-					if ( $loc === '' ) {
+					if ( '' === $loc ) {
 						continue;
 					}
 
 					$writer->startElement( 'url' );
 					$writer->writeElement( 'loc', $loc );
-					$writer->endElement(); // url
+					$writer->endElement(); // url.
 				}
 			}
 
-			$writer->endElement(); // urlset
+			$writer->endElement(); // urlset.
 			$xml = $writer->outputMemory();
 		} else {
 			// Fallback if ext-xmlwriter is not available.
@@ -214,11 +256,11 @@ final class XML_Sitemap_Repository {
 
 			if ( ! empty( $sitemap_urls ) ) {
 				foreach ( $sitemap_urls as $url ) {
-					if ( ! is_string( $url ) || $url === '' ) {
+					if ( ! is_string( $url ) || '' === $url ) {
 						continue;
 					}
 					$loc = \esc_url_raw( $url );
-					if ( $loc === '' ) {
+					if ( '' === $loc ) {
 						continue;
 					}
 					$xml .= '<url><loc>' . htmlspecialchars( $loc, ENT_QUOTES | ENT_XML1, 'UTF-8' ) . '</loc></url>';
@@ -233,6 +275,6 @@ final class XML_Sitemap_Repository {
 			header( 'X-Robots-Tag: noindex, nofollow' );
 		}
 
-		echo $xml;
+		echo $xml; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- XML is constructed safely above.
 	}
 }

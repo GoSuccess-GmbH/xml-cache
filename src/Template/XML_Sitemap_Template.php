@@ -1,4 +1,9 @@
 <?php
+/**
+ * Template loader for the XML sitemap output.
+ *
+ * @package xml-cache
+ */
 
 declare( strict_types=1 );
 

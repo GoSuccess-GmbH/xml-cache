@@ -1,13 +1,27 @@
 <?php
+/**
+ * Activation tasks repository.
+ *
+ * @package xml-cache
+ */
 
 declare( strict_types=1 );
 
 namespace GoSuccess\XML_Cache\Repository;
 
+/**
+ * Handles plugin activation logic.
+ */
 final class Activation_Repository {
-    public function __construct() {}
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {}
 
-    public function activation(): void {
+	/**
+	 * Run on plugin activation.
+	 */
+	public function activation(): void {
 		if ( Deactivation_Repository::is_running() ) {
 			return;
 		}
@@ -18,6 +32,11 @@ final class Activation_Repository {
 		flush_rewrite_rules();
 	}
 
+	/**
+	 * Default plugin settings.
+	 *
+	 * @return array Default settings structure.
+	 */
 	public static function get_default_settings(): array {
 		return array(
 			array(

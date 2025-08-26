@@ -1,4 +1,9 @@
 <?php
+/**
+ * Service configuration for the XML Cache plugin.
+ *
+ * @package xml-cache
+ */
 
 declare(strict_types=1);
 
@@ -43,22 +48,22 @@ return static function ( ContainerConfigurator $container ): void {
 		->set( 'Activation_Repository', Activation_Repository::class )
 		->tag( 'xml_cache.service' );
 
-    $services
-        ->set( 'Activation_Controller', Activation_Controller::class )
+	$services
+		->set( 'Activation_Controller', Activation_Controller::class )
 		->arg( '$plugin_configuration', service( 'Plugin_Configuration' ) )
-        ->arg( '$activation_repository', service( 'Activation_Repository' ) )
-        ->tag( 'xml_cache.service' );
+		->arg( '$activation_repository', service( 'Activation_Repository' ) )
+		->tag( 'xml_cache.service' );
 
 	$services
 		->set( 'Deactivation_Repository', Deactivation_Repository::class )
 		->arg( '$plugin_configuration', service( 'Plugin_Configuration' ) )
 		->tag( 'xml_cache.service' );
 
-    $services
-        ->set( 'Deactivation_Controller', Deactivation_Controller::class )
+	$services
+		->set( 'Deactivation_Controller', Deactivation_Controller::class )
 		->arg( '$plugin_configuration', service( 'Plugin_Configuration' ) )
-        ->arg( '$deactivation_repository', service( 'Deactivation_Repository' ) )
-        ->tag( 'xml_cache.service' );
+		->arg( '$deactivation_repository', service( 'Deactivation_Repository' ) )
+		->tag( 'xml_cache.service' );
 
 	$services
 		->set( 'Uninstall_Repository', Uninstall_Repository::class )
@@ -75,32 +80,32 @@ return static function ( ContainerConfigurator $container ): void {
 		->arg( '$plugin_configuration', service( 'Plugin_Configuration' ) )
 		->tag( 'xml_cache.service' );
 
-    $services
-        ->set( 'Menu_Controller', Menu_Controller::class )
+	$services
+		->set( 'Menu_Controller', Menu_Controller::class )
 		->arg( '$plugin_configuration', service( 'Plugin_Configuration' ) )
-        ->arg( '$menu_repository', service( 'Menu_Repository' ) )
-        ->tag( 'xml_cache.service' );
+		->arg( '$menu_repository', service( 'Menu_Repository' ) )
+		->tag( 'xml_cache.service' );
 
 	$services
-        ->set( 'Script_Repository', Script_Repository::class )
-        ->arg( '$plugin_configuration', service( 'Plugin_Configuration' ) )
-        ->arg( '$menu_repository', service( 'Menu_Repository' ) )
-        ->tag( 'xml_cache.service' );
+		->set( 'Script_Repository', Script_Repository::class )
+		->arg( '$plugin_configuration', service( 'Plugin_Configuration' ) )
+		->arg( '$menu_repository', service( 'Menu_Repository' ) )
+		->tag( 'xml_cache.service' );
 
-    $services
-        ->set( 'Script_Controller', Script_Controller::class )
-        ->arg( '$script_repository', service( 'Script_Repository' ) )
-        ->tag( 'xml_cache.service' );
+	$services
+		->set( 'Script_Controller', Script_Controller::class )
+		->arg( '$script_repository', service( 'Script_Repository' ) )
+		->tag( 'xml_cache.service' );
 
 	$services
 		->set( 'Rewrite_Rules_Repository', Rewrite_Rules_Repository::class )
 		->arg( '$plugin_configuration', service( 'Plugin_Configuration' ) )
 		->tag( 'xml_cache.service' );
 
-    $services
-        ->set( 'Rewrite_Rules_Controller', Rewrite_Rules_Controller::class )
-        ->arg( '$rewrite_rules_repository', service( 'Rewrite_Rules_Repository' ) )
-        ->tag( 'xml_cache.service' );
+	$services
+		->set( 'Rewrite_Rules_Controller', Rewrite_Rules_Controller::class )
+		->arg( '$rewrite_rules_repository', service( 'Rewrite_Rules_Repository' ) )
+		->tag( 'xml_cache.service' );
 
 	$services
 		->set( 'XML_Sitemap_Repository', XML_Sitemap_Repository::class )

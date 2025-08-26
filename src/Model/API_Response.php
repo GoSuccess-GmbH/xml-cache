@@ -1,4 +1,9 @@
 <?php
+/**
+ * Simple API response DTO for consistent REST output.
+ *
+ * @package xml-cache
+ */
 
 declare(strict_types=1);
 
@@ -10,6 +15,13 @@ namespace GoSuccess\XML_Cache\Model;
  * Represents a response from the API.
  */
 final class API_Response {
+	/**
+	 * Constructor.
+	 *
+	 * @param bool        $success Success flag.
+	 * @param array|null  $data    Payload data.
+	 * @param string|null $message Message text.
+	 */
 	public function __construct(
 		private bool $success = false,
 		private ?array $data = null,
@@ -75,12 +87,17 @@ final class API_Response {
 		$this->message = $message;
 		return $this;
 	}
-    
+
+	/**
+	 * Convert response to array for rest_ensure_response.
+	 *
+	 * @return array<string,mixed> Response data.
+	 */
 	public function to_array(): array {
-		return [
+		return array(
 			'success' => $this->success,
-			'data' => $this->data,
-			'message' => $this->message
-		];
+			'data'    => $this->data,
+			'message' => $this->message,
+		);
 	}
 }

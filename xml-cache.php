@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name:       XML Cache
  * Description:       Generates an XML sitemap for cache plugins.
@@ -11,8 +10,9 @@
  * Text Domain:       xml-cache
  * License:           GPL v3 or later
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * @package xml-cache
  */
-
 
 declare(strict_types=1);
 

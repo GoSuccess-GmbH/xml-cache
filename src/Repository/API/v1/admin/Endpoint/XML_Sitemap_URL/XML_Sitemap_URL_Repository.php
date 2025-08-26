@@ -1,4 +1,9 @@
 <?php
+/**
+ * XML Sitemap URL endpoint repository.
+ *
+ * @package xml-cache
+ */
 
 declare(strict_types=1);
 
@@ -9,16 +14,19 @@ namespace GoSuccess\XML_Cache\Repository\API\v1\Admin\Endpoint\XML_Sitemap_URL;
  *
  * Handles the XML Sitemap URL endpoint for the XML Cache plugin.
  */
-final class XML_Sitemap_URL_Repository
-{
-    /** @var string $route */
-    // The route for the XML Sitemap URL endpoint
-    public static string $route = 'xml-sitemap-url';
+final class XML_Sitemap_URL_Repository {
 
-    /**
-     * Constructor to initialize the XML Sitemap URL endpoint.
-     */
-    public function __construct() {
-        new Read();
-    }
+	/**
+	 * The route for the XML Sitemap URL endpoint.
+	 *
+	 * @var string
+	 */
+	public static string $route = 'xml-sitemap-url';
+
+	/**
+	 * Constructor to initialize the XML Sitemap URL endpoint.
+	 */
+	public function __construct() {
+		new Read();
+	}
 }

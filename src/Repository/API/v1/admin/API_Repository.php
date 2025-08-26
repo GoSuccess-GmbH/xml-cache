@@ -1,4 +1,9 @@
 <?php
+/**
+ * Admin API repository that registers endpoint groups.
+ *
+ * @package xml-cache
+ */
 
 declare(strict_types=1);
 
@@ -12,18 +17,25 @@ use GoSuccess\XML_Cache\Repository\API\v1\Admin\Endpoint\XML_Sitemap_URL\XML_Sit
  *
  * Handles the API repository for the XML Cache plugin.
  */
-final class API_Repository
-{
-    /**
-     * API namespace.
-     * @var string
-     */
-    public static string $namespace = 'xml-cache/v1/admin';
+final class API_Repository {
 
-    public function __construct() {}
-    
-    public function register_endpoints(): void {
-        new Settings_Repository();
-        new XML_Sitemap_URL_Repository();
-    }
+	/**
+	 * API namespace.
+	 *
+	 * @var string
+	 */
+	public static string $namespace = 'xml-cache/v1/admin';
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {}
+
+	/**
+	 * Register admin endpoints.
+	 */
+	public function register_endpoints(): void {
+		new Settings_Repository();
+		new XML_Sitemap_URL_Repository();
+	}
 }

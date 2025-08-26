@@ -1,4 +1,9 @@
 <?php
+/**
+ * Plugin configuration value object.
+ *
+ * @package xml-cache
+ */
 
 declare(strict_types=1);
 
@@ -12,6 +17,13 @@ namespace GoSuccess\XML_Cache\Configuration;
  */
 final class Plugin_Configuration {
 
+	/**
+	 * Constructor.
+	 *
+	 * @param string $file  Plugin file path.
+	 * @param string $slug  Plugin slug used for admin pages and URLs.
+	 * @param string $title Plugin title.
+	 */
 	public function __construct(
 		/**
 		 * Plugin file path.
