@@ -7,7 +7,7 @@
 
 declare( strict_types=1 );
 
-namespace GoSuccess\XML_Cache\Repository\API\v1\Admin\Endpoint\XML_Sitemap_URL;
+namespace GoSuccess\XML_Cache\Repository\API\V1\Admin\Endpoint\XML_Sitemap_URL;
 
 /**
  * Class XML_Sitemap_URL_Repository

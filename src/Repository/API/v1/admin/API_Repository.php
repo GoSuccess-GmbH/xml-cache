@@ -7,10 +7,10 @@
 
 declare( strict_types=1 );
 
-namespace GoSuccess\XML_Cache\Repository\API\v1\Admin;
+namespace GoSuccess\XML_Cache\Repository\API\V1\Admin;
 
-use GoSuccess\XML_Cache\Repository\API\v1\Admin\Endpoint\Settings\Settings_Repository;
-use GoSuccess\XML_Cache\Repository\API\v1\Admin\Endpoint\XML_Sitemap_URL\XML_Sitemap_URL_Repository;
+use GoSuccess\XML_Cache\Repository\API\V1\Admin\Endpoint\Settings\Settings_Repository;
+use GoSuccess\XML_Cache\Repository\API\V1\Admin\Endpoint\XML_Sitemap_URL\XML_Sitemap_URL_Repository;
 
 /**
  * Class API_Repository

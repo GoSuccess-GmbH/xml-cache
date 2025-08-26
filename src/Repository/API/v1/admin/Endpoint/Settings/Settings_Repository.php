@@ -7,7 +7,7 @@
 
 declare( strict_types=1 );
 
-namespace GoSuccess\XML_Cache\Repository\API\v1\Admin\Endpoint\Settings;
+namespace GoSuccess\XML_Cache\Repository\API\V1\Admin\Endpoint\Settings;
 
 /**
  * Class Settings_Repository
