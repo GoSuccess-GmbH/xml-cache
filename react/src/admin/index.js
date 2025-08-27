@@ -1,10 +1,11 @@
 import domReady from '@wordpress/dom-ready';
-import { render } from '@wordpress/element';
+import { createRoot } from '@wordpress/element';
 import Settings from './components/Settings';
 
 domReady(() => {
-    const settingsContainer = document.querySelector( 'xml-cache-settings' );
+    const settingsContainer = document.querySelector( 'xml-cache' );
     if ( settingsContainer !== null ) {
-        render( <Settings />, settingsContainer );
+        const root = createRoot( settingsContainer );
+        root.render( <Settings /> );
     }
 });

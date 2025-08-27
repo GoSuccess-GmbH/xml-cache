@@ -37,6 +37,22 @@ final class Plugin_Configuration {
 		 * Plugin title.
 		 */
 		private string $title,
+        /**
+         * Plugin support URL.
+         */
+		private string $support_url,
+        /**
+         * Plugin review URL.
+         */
+		private string $review_url,
+        /**
+         * Plugin GitHub URL.
+         */
+		private string $github_url,
+        /**
+         * REST API Namespace
+         */
+        private string $rest_api_namespace,
 	) {}
 
 	/**
@@ -103,4 +119,40 @@ final class Plugin_Configuration {
 			admin_url( (string) 'tools.php?page=' . $this->get_slug() )
 		);
 	}
+
+	/**
+	 * Returns the plugin support URL.
+	 *
+	 * @return string The support URL.
+	 */
+	public function get_support_url(): string {
+		return esc_url( $this->support_url );
+	}
+
+	/**
+	 * Returns the plugin review URL.
+	 *
+	 * @return string The review URL.
+	 */
+	public function get_review_url(): string {
+		return esc_url( $this->review_url );
+	}
+
+	/**
+	 * Returns the plugin GitHub URL.
+	 *
+	 * @return string The GitHub URL.
+	 */
+	public function get_github_url(): string {
+		return esc_url( $this->github_url );
+	}
+
+    /**
+     * Returns the REST API namespace.
+     *
+     * @return string The REST API namespace.
+     */
+    public function get_rest_api_namespace(): string {
+        return $this->rest_api_namespace;
+    }
 }

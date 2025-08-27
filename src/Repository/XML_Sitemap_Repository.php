@@ -35,8 +35,16 @@ final class XML_Sitemap_Repository {
 			return;
 		}
 
+
 		if ( ! empty( $option[0]['posts_enabled'] ) ) {
+			// Only core posts/pages; CPTs are handled via separate toggle below.
 			$this->get_post_urls();
+		}
+
+		// Custom Post Types: default to enabled if not explicitly set (backwards compatibility).
+		$cpt_enabled = isset( $option[0]['custom_post_types_enabled'] ) ? ! empty( $option[0]['custom_post_types_enabled'] ) : true;
+		if ( $cpt_enabled ) {
+			$this->get_custom_post_type_urls();
 		}
 
 		if ( ! empty( $option[0]['categories_enabled'] ) ) {
@@ -62,7 +70,46 @@ final class XML_Sitemap_Repository {
 				'fields'      => 'ids',
 				'orderby'     => 'ID',
 				'post_status' => 'publish',
-				'post_type'   => $this->get_public_post_types(),
+				'post_type'   => array( 'post', 'page' ),
+			)
+		);
+
+		$this->get_urls( 'get_permalink', $post_ids );
+	}
+
+	/**
+	 * Collect URLs for all public, non-builtin custom post types (CPTs).
+	 *
+	 * This method intentionally excludes core types like 'post' and 'page'.
+	 * It reuses the general permalink + pagination logic in get_urls().
+	 */
+	private function get_custom_post_type_urls(): void {
+		$post_types = get_post_types(
+			array(
+				'public'   => true,
+				'_builtin' => false,
+			),
+			'names'
+		);
+
+		if ( empty( $post_types ) || ! is_array( $post_types ) ) {
+			return;
+		}
+
+		// Exclude attachments defensively if registered as public by a plugin.
+		$post_types = array_values( array_diff( $post_types, array( 'attachment' ) ) );
+
+		if ( empty( $post_types ) ) {
+			return;
+		}
+
+		$post_ids = get_posts(
+			array(
+				'numberposts' => -1,
+				'fields'      => 'ids',
+				'orderby'     => 'ID',
+				'post_status' => 'publish',
+				'post_type'   => $post_types,
 			)
 		);
 
@@ -127,21 +174,6 @@ final class XML_Sitemap_Repository {
 				$this->sitemap_urls[] = $matches[1];
 			}
 		}
-	}
-
-	/**
-	 * Get public post types list.
-	 *
-	 * @return array List of public post types.
-	 */
-	private function get_public_post_types(): array {
-		return array_values(
-			get_post_types(
-				array(
-					'public' => true,
-				)
-			)
-		);
 	}
 
 	/**

@@ -40,17 +40,12 @@ final class Activation_Repository {
 	public static function get_default_settings(): array {
 		return array(
 			array(
-				'posts_enabled'      => true,
-				'categories_enabled' => true,
-				'archives_enabled'   => true,
-				'tags_enabled'       => true,
-			),
-			array(
-				'is_posts_panel_open'      => false,
-				'is_categories_panel_open' => false,
-				'is_archives_panel_open'   => false,
-				'is_tags_panel_open'       => false,
-			),
+				'posts_enabled'             => true,
+				'custom_post_types_enabled' => true,
+				'categories_enabled'        => true,
+				'archives_enabled'          => true,
+				'tags_enabled'              => true,
+			)
 		);
 	}
 }

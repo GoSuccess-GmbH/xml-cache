@@ -72,10 +72,29 @@ final class Menu_Repository {
 	public function add_action_links( array $actions, string $plugin_file, array $plugin_data, string $context ): array {
 		// Mark currently unused parameters as used for PHPCS.
 		unset( $plugin_file, $plugin_data, $context );
+
 		$actions[] = sprintf(
 			'<a href="%s">%s</a>',
 			$this->plugin_configuration->get_admin_url(),
 			esc_html__( 'Settings', 'xml-cache' )
+		);
+		
+        $actions[] = sprintf(
+			'<a href="%s">%s</a>',
+			$this->plugin_configuration->get_support_url(),
+			esc_html__( 'Support', 'xml-cache' )
+		);
+		
+        $actions[] = sprintf(
+			'<a href="%s">%s</a>',
+			$this->plugin_configuration->get_review_url(),
+			esc_html__( 'Leave a review', 'xml-cache' )
+		);
+		
+        $actions[] = sprintf(
+			'<a href="%s">%s</a>',
+			$this->plugin_configuration->get_github_url(),
+			esc_html__( 'Contribute on GitHub', 'xml-cache' )
 		);
 
 		return $actions;

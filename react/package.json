@@ -1,14 +1,13 @@
 {
   "name": "xml-cache",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "Generates an XML sitemap for cache plugins.",
   "license": "GPL-3.0-or-later",
   "author": "GoSuccess",
-  "type": "commonjs",
   "main": "index.js",
   "scripts": {
     "start": "wp-scripts start",
-    "build": "wp-scripts build --webpack-src-dir=src/admin/ --output-path=../assets/admin/ && minify src/css/admin.css > ../assets/css/admin.min.css"
+    "build": "wp-scripts build --webpack-src-dir=src/admin/ --output-path=../assets/admin/"
   },
   "dependencies": {
     "@wordpress/api-fetch": "^7.29.0",

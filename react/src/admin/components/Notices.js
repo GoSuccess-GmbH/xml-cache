@@ -14,9 +14,15 @@ export default function Notices() {
     const { removeNotice } = useDispatch( noticesStore );
     
     return (
-        <SnackbarList
-            notices={ notices }
-            onRemove={ removeNotice }
-        />
+        <div
+            style={{
+                position: 'relative',
+            }}
+        >
+            <SnackbarList
+                notices={ notices }
+                onRemove={ removeNotice }
+            />
+        </div>
     );
 };

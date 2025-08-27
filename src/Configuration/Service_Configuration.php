@@ -42,6 +42,10 @@ return static function ( ContainerConfigurator $container ): void {
 		->arg( '$file', XML_CACHE_FILE )
 		->arg( '$slug', 'xml_cache' )
 		->arg( '$title', 'XML Cache' )
+        ->arg( '$support_url', 'https://wordpress.org/support/plugin/xml-cache/' )
+        ->arg( '$review_url', 'https://wordpress.org/support/plugin/xml-cache/reviews/#new-post' )
+        ->arg( '$github_url', 'https://github.com/GoSuccess-GmbH/xml-cache' )
+        ->arg( '$rest_api_namespace', API_Repository::$namespace )
 		->tag( 'xml_cache.service' );
 
 	$services
