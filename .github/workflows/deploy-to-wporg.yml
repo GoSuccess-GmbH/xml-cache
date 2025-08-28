@@ -192,21 +192,21 @@ jobs:
                 BEGIN { changed=0 }
                 {
                   line=$0
-                  if (line ~ /protected[[:space:]]*\(NodeDefinition[[:space:]]*\&[[:space:]]*ParentNodeDefinitionInterface\)[[:space:]]*\|[[:space:]]*null[[:space:]]*\$parent[[:space:]]*=.*/) {
+                  if (line ~ /protected[[:space:]]*\(NodeDefinition[[:space:]]*&[[:space:]]*ParentNodeDefinitionInterface\)[[:space:]]*\|[[:space:]]*null[[:space:]]*\$parent[[:space:]]*=.*/) {
                     ind=indent_of(line)
-                    line=ind "protected \\$parent = null;"
+                    line=ind "protected $parent = null;"
                     print line
                     changed=1
                     next
                   }
-                  if (line ~ /public[[:space:]]+function[[:space:]]+setParent\(\(NodeDefinition[[:space:]]*\&[[:space:]]*ParentNodeDefinitionInterface\)[[:space:]]*\|[[:space:]]*null[[:space:]]*\$parent\)[[:space:]]*:[[:space:]]*static/) {
+                  if (line ~ /public[[:space:]]+function[[:space:]]+setParent\(\(NodeDefinition[[:space:]]*&[[:space:]]*ParentNodeDefinitionInterface\)[[:space:]]*\|[[:space:]]*null[[:space:]]*\$parent\)[[:space:]]*:[[:space:]]*static/) {
                     ind=indent_of(line)
-                    line=ind "public function setParent(\\$parent): static"
+                    line=ind "public function setParent($parent): static"
                     print line
                     changed=1
                     next
                   }
-                  if (line ~ /public[[:space:]]+function[[:space:]]+end\(\)[[:space:]]*:[[:space:]]*NodeDefinition[[:space:]]*\&[[:space:]]*ParentNodeDefinitionInterface/) {
+                  if (line ~ /public[[:space:]]+function[[:space:]]+end\(\)[[:space:]]*:[[:space:]]*NodeDefinition[[:space:]]*&[[:space:]]*ParentNodeDefinitionInterface/) {
                     ind=indent_of(line)
                     line=ind "public function end()"
                     print line
