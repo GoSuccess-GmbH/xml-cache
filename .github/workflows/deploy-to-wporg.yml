@@ -4,6 +4,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 concurrency:
   group: wporg-deploy-${{ github.ref_name }}
   cancel-in-progress: false
@@ -140,6 +143,36 @@ jobs:
 
           # Update Stable tag: to match the release version (optional but recommended)
           sed -i.bak -E "s/^(Stable tag:[[:space:]]*).*/\\1$VERSION/" readme.txt && rm -f readme.txt.bak
+
+      - name: Snapshot prepared changelog files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .changelog-tmp
+          cp -f readme.txt .changelog-tmp/readme.txt
+          if [ -f changelog.txt ]; then cp -f changelog.txt .changelog-tmp/changelog.txt; fi
+
+      - name: Commit changelog back to repository (main)
+        shell: bash
+        env:
+          GH_USER_NAME: github-actions[bot]
+          GH_USER_EMAIL: github-actions[bot]@users.noreply.github.com
+        run: |
+          set -euo pipefail
+          git config user.name "$GH_USER_NAME"
+          git config user.email "$GH_USER_EMAIL"
+          git fetch --no-tags origin main
+          git checkout -B main origin/main
+          cp -f .changelog-tmp/readme.txt readme.txt
+          if [ -f .changelog-tmp/changelog.txt ]; then cp -f .changelog-tmp/changelog.txt changelog.txt; fi
+          git add readme.txt || true
+          if [ -f changelog.txt ]; then git add changelog.txt; fi
+          if git diff --cached --quiet; then
+            echo "No changelog changes to commit."
+          else
+            git commit -m "chore(release): update changelog for $VERSION"
+            git push origin HEAD:main
+          fi
 
       - name: SVN Checkout
         shell: bash
