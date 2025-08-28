@@ -4,7 +4,7 @@
  * Description:       Generates an XML sitemap for cache plugins.
  * Version:           2.0.0
  * Requires at least: 6.0
- * Requires PHP:      8.0
+ * Requires PHP:      8.2
  * Author:            GoSuccess
  * Author URI:        https://gosuccess.io
  * Text Domain:       xml-cache
