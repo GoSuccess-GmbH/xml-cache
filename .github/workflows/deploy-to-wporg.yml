@@ -169,6 +169,24 @@ jobs:
             --exclude='README.md' \
             ./ "$SVN_WORKDIR"/trunk/
 
+      - name: Patch vendor for WP.org PHP parser compatibility (strip PHP 8.1/8.2 types)
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE="$SVN_WORKDIR/trunk/vendor/symfony/config/Definition/Builder/NodeBuilder.php"
+          if [ -f "$FILE" ]; then
+            echo "Patching $FILE for DNF/intersection type removal"
+            # 1) Remove DNF typed property on $parent
+            sed -i.bak -E "s#^\s*protected \(NodeDefinition\&ParentNodeDefinitionInterface\)\|null \$parent = null;#    protected \$parent = null;#" "$FILE"
+            # 2) Relax setParent() parameter type (keep return type 'static')
+            sed -i.bak -E "s#public function setParent\(\(NodeDefinition\&ParentNodeDefinitionInterface\)\|null \$parent\): static#public function setParent(\$parent): static#" "$FILE"
+            # 3) Remove intersection return type from end()
+            sed -i.bak -E "s#public function end\(\): NodeDefinition\&ParentNodeDefinitionInterface#public function end()#" "$FILE"
+            rm -f "$FILE".bak
+          else
+            echo "Symfony NodeBuilder not found at: $FILE (skipping)"
+          fi
+
       - name: Synchronize plugin assets to $SVN_WORKDIR/assets (from repo $ASSETS_DIR)
         shell: bash
         run: |
