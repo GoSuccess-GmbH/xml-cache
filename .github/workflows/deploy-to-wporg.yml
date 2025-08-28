@@ -144,6 +144,12 @@ jobs:
       - name: SVN Checkout
         shell: bash
         run: |
+          # Ensure Subversion is installed (guard in case previous step is missing in old tags)
+          if ! command -v svn >/dev/null 2>&1; then
+            echo "svn not found. Installing..."
+            sudo apt-get update -y
+            sudo apt-get install -y subversion
+          fi
           svn --version
           svn co "$SVN_URL" "$SVN_WORKDIR"
 
