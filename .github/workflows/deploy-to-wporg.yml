@@ -176,13 +176,27 @@ jobs:
           FILE="$SVN_WORKDIR/trunk/vendor/symfony/config/Definition/Builder/NodeBuilder.php"
           if [ -f "$FILE" ]; then
             echo "Patching $FILE for DNF/intersection type removal"
-            # 1) Remove DNF typed property on $parent
-            sed -i.bak -E "s#^\s*protected \(NodeDefinition\&ParentNodeDefinitionInterface\)\|null \$parent = null;#    protected \$parent = null;#" "$FILE"
+            # 1) Remove DNF typed property on $parent (preserve indentation)
+            sed -i.bak -E "s/^([[:space:]]*)protected[[:space:]]*\(NodeDefinition\&ParentNodeDefinitionInterface\)\|null[[:space:]]*\$parent[[:space:]]*=[[:space:]]*null;/\1protected \$parent = null;/" "$FILE"
             # 2) Relax setParent() parameter type (keep return type 'static')
-            sed -i.bak -E "s#public function setParent\(\(NodeDefinition\&ParentNodeDefinitionInterface\)\|null \$parent\): static#public function setParent(\$parent): static#" "$FILE"
+            sed -i.bak -E "s/public function setParent\(\(NodeDefinition\&ParentNodeDefinitionInterface\)\|null[[:space:]]*\$parent\):[[:space:]]*static/public function setParent(\$parent): static/" "$FILE"
             # 3) Remove intersection return type from end()
-            sed -i.bak -E "s#public function end\(\): NodeDefinition\&ParentNodeDefinitionInterface#public function end()#" "$FILE"
+            sed -i.bak -E "s/public function end\(\):[[:space:]]*NodeDefinition\&ParentNodeDefinitionInterface/public function end()/" "$FILE"
             rm -f "$FILE".bak
+
+            # 4) Verify patch applied – fail early if any intersection/DNF type remains
+            if grep -Eq "NodeDefinition\&ParentNodeDefinitionInterface" "$FILE"; then
+              echo "Vendor patch verification failed: intersection types still present in $FILE" >&2
+              echo "--- Context (head) ---" >&2
+              head -n 60 "$FILE" >&2 || true
+              exit 1
+            fi
+
+            # 5) Lint the patched file to ensure valid PHP syntax for wp.org parser
+            php -l "$FILE" || {
+              echo "PHP lint failed after patching vendor file: $FILE" >&2
+              exit 1
+            }
           else
             echo "Symfony NodeBuilder not found at: $FILE (skipping)"
           fi
